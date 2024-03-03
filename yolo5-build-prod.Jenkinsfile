@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'ls'
-                sh 'echo building yolov prod pipeline...'
+                sh 'echo building yolov prod pipeline 2 ...'
             }
         }
     }
