@@ -4,13 +4,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'amiraniv-github-prod', passwordVariable: 'passworddh', usernameVariable: 'usernamedh')]) {
-                        sh """
-                            docker login -u $usernamedh -p $passworddh
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh '''
+                            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                             docker build -t jenkinspoly-prod-test:v1.0 .
-                            docker tag jenkinspoly-prod-test:v1.0 $usernamedh/jenkinspoly-prod-test:v1.0
-                            docker push $usernamedh/jenkinspoly-prod-test:v1.0
-                        """
+                            docker tag jenkinspoly-prod-test:v1.0 amiraniv/jenkinspoly-prod-test:v1.0 
+                            docker push amiraniv/jenkinspoly-prod-test:v1.0
+                        '''
                     }
                 }
             }
@@ -19,7 +19,7 @@ pipeline {
         stage('Trigger Deploy') {
             steps {
                 build job: 'polybot-build-prod', wait: false, parameters: [
-                    string(name: 'polybot-prod-test', value: "$usernamedh/jenkinspoly-prod-test:v1.0")
+                    string(name: 'polybot-build-prod', value: 'amiraniv/jenkinspoly-prod-test:v1.0')
                 ]
             }
         }
