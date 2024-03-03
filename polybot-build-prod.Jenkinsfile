@@ -4,10 +4,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                withCredentials([string(credentialsId: 'amiraniv-DH-prod-U', variable: 'AmiranIV-DH-U'), string(credentialsId: 'amiraniv-prod-DH-Pass', variable: 'AmiranIV-DH-Pass')])
+                withCredentials([usernamePassword(credentialsId: 'amiraniv-github-prod', passwordVariable: 'amiraniv-dh-prod-pass', usernameVariable: 'amiraniv-dh-prod')])
                     {
                          sh '''
-                            docker login -u $AmiranIV-DH-U -p $AmiranIV-DH-Pass
+                            docker login -u $amiraniv-github-prod -p $amiraniv-dh-prod-pass
                             docker build -t jenkinspoly-prod-test:v1.0 .
                             docker tag jenkinspoly-prod-test:v1.0 amiraniv/jenkinspoly-prod-test:v1.0
                             docker push amiraniv/jenkinspoly-prod-test:v1.0
@@ -26,4 +26,5 @@ pipeline {
         }
     }
 }
+
 
