@@ -9,7 +9,7 @@ pipeline {
     environment {
         DH_NAME = "amiraniv"
         FULL_VER = "v.$BUILD_NUMBER"
-    }
+    } 
     stages {
         stage('Build') {
             steps {
@@ -26,15 +26,19 @@ pipeline {
                 }
             }
         }
-
+    } // end stages
+    
     post {
         always {
-            sh '''
-            docker system prune -a -f --filter "until=24h"
-            docker builder prune -a -f --filter "until=24h"
-            '''
-            cleanWs()
+            steps {
+                script {
+                    sh '''
+                    docker system prune -a -f --filter "until=24h"
+                    docker builder prune -a -f --filter "until=24h"
+                    '''
+                    cleanWs()
+                }
+            }
         }
-
     }
 }
