@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegram-bot
+  template:
+    metadata:
+      labels:
+        app: telegram-bot
+    spec:
+      containers:
+      - name: telegram-bot
+        image: amiraniv/k8s-poly-amiran:v10.0
+        ports:
+        - containerPort: 8443
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8443
+          initialDelaySeconds: 5  # Wait 5 seconds before starting the probe
+          periodSeconds: 10        # Check every 10 seconds
+        livenessProbe:
+          httpGet:
+            path: /ready
+            port: 8443
+          initialDelaySeconds: 10 # Wait 10 seconds before starting the probe
+          periodSeconds: 20       # Check every 20 seconds
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "100m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegram-bot-service
+spec:
+  selector:
+    app: telegram-bot
+  ports:
+  - protocol: TCP
+    port: 8443
+    targetPort: 8443
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: amiraniv-polybot-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - amiraniv-polybot.devops-int-college.com
+    secretName: amiraniv-polybot-tls
+  rules:
+  - host: amiraniv-polybot.devops-int-college.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: telegram-bot-service
+            port:
+              number: 8443
