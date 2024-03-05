@@ -10,7 +10,7 @@ pipeline {
         DH_NAME = "amiraniv"
         FULL_VER = "v.$BUILD_NUMBER"
     }
-    
+
     stages {
         stage('Build') {
             steps {
@@ -27,8 +27,16 @@ pipeline {
                 }
             }
         }
+        
+        stage('Trigger Deploy') {
+            steps {
+                build job: 'jenkinsProdTest', wait: false, parameters: [
+                    string(name: 'JENKINS_POLY_PROD_IMG_URL', value: "$DH_NAME/jenkinspoly-prod-test:$FULL_VER")
+                ]
+            }
+        }
     }
-    
+
     post {
         always {
             sh '''
