@@ -30,7 +30,7 @@ pipeline {
         
         stage('Trigger Deploy') {
             steps {
-                build job: 'jenkinsProdTest', wait: false, parameters: [
+                build job: 'releases-prod', wait: false, parameters: [
                     string(name: 'JENKINS_POLY_PROD_IMG_URL', value: "$DH_NAME/jenkinspoly-prod-test:$FULL_VER")
                 ]
             }
