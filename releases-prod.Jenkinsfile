@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'amiraniv/jenkins-agent-docker:v1.0'
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     options {
         timestamps()
     }
@@ -20,4 +25,3 @@ pipeline {
         }
     }
 }
-
