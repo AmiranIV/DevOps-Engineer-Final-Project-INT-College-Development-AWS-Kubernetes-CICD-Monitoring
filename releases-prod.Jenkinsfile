@@ -8,14 +8,32 @@ pipeline {
     options {
         timestamps()
     }
-    parameters { string(name: 'JENKINS_POLY_PROD_IMG_URL', defaultValue: '', description: '') }
+    parameters {
+        string(name: 'JENKINS_POLY_PROD_IMG_URL', defaultValue: '', description: '')
+    }
 
     stages {
         stage('Deploy') {
             steps {
-                // complete this code to deploy to real k8s cluster
-                sh 'echo kubectl apply -f ....'
-                sh 'echo $JENKINS_POLY_PROD_IMG_URL'
+                script {
+                    // Read YAML file
+                    def yamlContent = readFile('k8s/prod/polybot.yaml')
+
+                    // Convert YAML to JSON
+                    def jsonContent = readYaml text: yamlContent
+
+                    // Update image value
+                    jsonContent.spec.template.spec.containers[0].image = env.JENKINS_POLY_PROD_IMG_URL
+
+                    // Convert JSON back to YAML
+                    def updatedYaml = yamlContent = yamlBuilder.toYaml(jsonContent)
+
+                    // Write updated YAML back to file
+                    writeFile file: 'k8s/prod/polybot.yaml', text: updatedYaml
+
+                    // Verify changes
+                    sh "cat k8s/prod/polybot.yaml"
+                }
             }
         }
     }
@@ -25,5 +43,3 @@ pipeline {
         }
     }
 }
-
-
