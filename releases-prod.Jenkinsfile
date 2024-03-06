@@ -27,7 +27,7 @@ pipeline {
 
                 // Adding secret text credentials to Git remote URL
                 withCredentials([string(credentialsId: 'githubsecretpass', variable: 'password')]) {
-                    sh "git remote add origin git@github.com:AmiranIV/CICD-Final-Project.git"
+                    sh "git remote set-url origin git@github.com:AmiranIV/CICD-Final-Project.git"
                     sh 'git checkout releases'
                     sh 'git branch'
                     sh 'git add k8s/prod/polybot.yaml'
