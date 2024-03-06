@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'amiraniv/jenkins-agent-docker:v1.0'
+            image 'amiraniv/jenkins-agent-docker-yq:v3.0'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
@@ -10,7 +10,7 @@ pipeline {
         DH_NAME = "amiraniv"
         FULL_VER = "v.$BUILD_NUMBER"
     }
-    
+
     stages {
         stage('Build') {
             steps {
@@ -27,8 +27,16 @@ pipeline {
                 }
             }
         }
+        
+        stage('Trigger Deploy') {
+            steps {
+                build job: 'releases-prod', wait: false, parameters: [
+                    string(name: 'JENKINS_POLY_PROD_IMG_URL', value: "$DH_NAME/jenkinspoly-prod-test:$FULL_VER")
+                ]
+            }
+        }
     }
-    
+
     post {
         always {
             sh '''
