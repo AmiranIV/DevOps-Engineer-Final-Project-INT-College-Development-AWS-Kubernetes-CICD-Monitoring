@@ -17,7 +17,7 @@ pipeline {
                 sh 'echo kubectl apply -f ....'
                 sh 'echo $JENKINS_POLY_PROD_IMG_URL'
                 sh 'cd k8s/prod && ls'
-                sh 'yq e .spec.template.spec.containers[0].image = env(JENKINS_POLY_PROD_IMG_URL) polybot.yaml'
+                sh "yq e '.spec.template.spec.containers[0].image = env(JENKINS_POLY_PROD_IMG_URL)' k8s/prod/polybot.yaml"
                 sh 'git add polybot.yaml'
                 sh 'git commit -m "$JENKINS_POLY_PROD_IMG_URL" '
                 sh 'git push origin releases'
