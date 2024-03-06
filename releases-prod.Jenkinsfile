@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                // complete this code to deploy to real k8s cluster
+                // Complete this code to deploy to real k8s cluster
                 sh 'echo kubectl apply -f ....'
                 sh 'echo $JENKINS_POLY_PROD_IMG_URL'
                 sh 'cd k8s/prod && ls'
@@ -27,13 +27,12 @@ pipeline {
 
                 // Adding secret text credentials to Git remote URL
                 withCredentials([string(credentialsId: 'githubsecretpass', variable: 'password')]) {
-                    sh "git remote set-url origin https://amiraniv:${githubsecretpass}@github.com/amiraniv/CICD-Final-Project.git"
+                    sh "git remote set-url origin https://amiraniv:${password}@github.com/amiraniv/CICD-Final-Project.git"
                     sh 'git checkout releases'
                     sh 'git branch'
                     sh 'git add k8s/prod/polybot.yaml'
                     sh 'git commit -m "$JENKINS_POLY_PROD_IMG_URL" '
-                    sh 'git push remote origin releases ..... url or something '
-
+                    sh 'git push origin releases'
                 }
             }
         }
