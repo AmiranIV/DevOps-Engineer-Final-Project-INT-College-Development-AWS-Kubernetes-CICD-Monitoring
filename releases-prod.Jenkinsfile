@@ -26,8 +26,8 @@ pipeline {
                 sh 'git config --global credential.helper cache'
 
                 // Adding secret text credentials to Git remote URL
-                withCredentials([string(credentialsId: 'githubsecretpass', variable: 'password')]) {
-                    sh "git remote set-url origin git@github.com:AmiranIV/CICD-Final-Project.git"
+                withCredentials([string(credentialsId: 'jenkinsclassicgithubtoken', variable: 'jenkinsclassicgithubtoken')]) {
+                    sh "git remote set-url origin https://amiraniv:${jenkinsclassicgithubtoken}@github.com/amiraniv/CICD-Final-Project.git"
                     sh 'git checkout releases'
                     sh 'git branch'
                     sh 'git add k8s/prod/polybot.yaml'
