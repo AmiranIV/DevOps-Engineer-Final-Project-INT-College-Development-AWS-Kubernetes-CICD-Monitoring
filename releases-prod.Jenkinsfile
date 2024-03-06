@@ -21,6 +21,7 @@ pipeline {
                 sh 'git config --global --add safe.directory /var/lib/jenkins/workspace/prod/releases-prod'
                 sh 'git config --global user.email "amiranivgi@gmail.com"'
                 sh 'git config --global user.name "amiraniv"'
+                sh 'git checkout releases'
                 sh 'git branch'
                 sh 'git add k8s/prod/polybot.yaml'
                 sh 'git commit -m "$JENKINS_POLY_PROD_IMG_URL" '
