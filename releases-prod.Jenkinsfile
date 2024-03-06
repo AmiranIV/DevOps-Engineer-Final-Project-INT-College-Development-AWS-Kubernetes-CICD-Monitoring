@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'amiraniv/jenkins-agent-docker:v1.0'
+            image 'amiraniv/jenkins-agent-docker-yq:v3.0'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
@@ -16,7 +16,11 @@ pipeline {
                 // complete this code to deploy to real k8s cluster
                 sh 'echo kubectl apply -f ....'
                 sh 'echo $JENKINS_POLY_PROD_IMG_URL'
-
+                sh 'cd k8s/prod'
+	        sh "yq e \".spec.template.spec.containers[0].image = env(JENKINS_POLY_PROD_IMG_URL)\" polybot.yaml"
+                sh 'git add polybot.yaml'
+                sh 'git commit -m "$JENKINS_POLY_PROD_IMG_URL" '
+                sh 'git push origin releases'
             }
         }
     }
