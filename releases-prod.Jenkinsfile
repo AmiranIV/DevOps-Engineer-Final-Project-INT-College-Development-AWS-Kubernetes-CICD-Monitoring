@@ -26,7 +26,7 @@ pipeline {
                 sh 'git config --global credential.helper cache'
 
                 // Adding secret text credentials to Git remote URL
-                withCredentials([string(credentialsId: 'githubsecretpass', variable: 'password')])]) {
+                withCredentials([string(credentialsId: 'githubsecretpass', variable: 'password')]) {
                     sh "git remote set-url origin https://amiraniv:${githubsecretpass}@github.com/amiraniv/CICD-Final-Project.git"
                     sh 'git checkout releases'
                     sh 'git branch'
