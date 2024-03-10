@@ -106,4 +106,4 @@ if __name__ == "__main__":
     bot = ImageProcessingBot(TELEGRAM_TOKEN, TELEGRAM_APP_URL)
     server_ready = True  # Set server to ready state
 
-    app.run(host='0.0.0.0', port=9444)
+    app.run(host='0.0.0.0', port=8443)
