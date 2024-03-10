@@ -17,17 +17,17 @@ spec:
       - name: telegram-bot-dev
         image: amiraniv/k8s-poly-amiran:v11.0
         ports:
-        - containerPort: 9444
+        - containerPort: 8443
         readinessProbe:
           httpGet:
             path: /ready
-            port: 9444
+            port: 8443
           initialDelaySeconds: 5  # Wait 5 seconds before starting the probe
           periodSeconds: 10        # Check every 10 seconds
         livenessProbe:
           httpGet:
             path: /ready
-            port: 9444
+            port: 8443
           initialDelaySeconds: 10 # Wait 10 seconds before starting the probe
           periodSeconds: 20       # Check every 20 seconds
         resources:
@@ -47,8 +47,8 @@ spec:
     app: telegram-bot-dev
   ports:
   - protocol: TCP
-    port: 9444
-    targetPort: 9444
+    port: 8443
+    targetPort: 8443
 
 ---
 
@@ -73,4 +73,4 @@ spec:
           service:
             name: telegram-bot-service-dev
             port:
-              number: 9444
+              number: 8443
