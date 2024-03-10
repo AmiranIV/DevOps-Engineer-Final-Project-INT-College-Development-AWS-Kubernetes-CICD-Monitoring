@@ -5,7 +5,7 @@ from bot import Bot, ImageProcessingBot
 import boto3
 
 app = flask.Flask(__name__)
-kms_key_id = <"YOURKMSID>
+kms_key_id = "6175ac5a-be77-4e29-9e5f-028fec6b910c"
 # Create a KMS client
 kms_client = boto3.client('kms', region_name='eu-north-1')
 # Retrieve the key
@@ -17,7 +17,7 @@ TOKEN = key_metadata['Description']
 # # TODO load TELEGRAM_TOKEN value from Secret Manager
 TELEGRAM_TOKEN = TOKEN
 
-TELEGRAM_APP_URL = <"APPLICATION LOAD BALANCER URL">
+TELEGRAM_APP_URL = "https://amiraniv-polybot.devops-int-college.com"
 
 @app.route('/', methods=['GET'])
 def index():

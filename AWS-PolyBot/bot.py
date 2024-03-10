@@ -17,8 +17,7 @@ class Bot:
         time.sleep(0.5)
 
         # set the webhook URL
-        self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', timeout=60,
-                                             certificate=open(f'/app/<NAME OF PUBLIC CERT.pem FILE>, 'r'))
+        self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', timeout=60, certificate=open(f'/app/AmiranIVK8s-Public.pem', 'r'))
 
         logger.info(f'Telegram Bot information\n\n{self.telegram_bot_client.get_me()}')
 
@@ -67,6 +66,9 @@ class Bot:
 
 
 class ImageProcessingBot(Bot):
+    # TODO upload the photo to S3
+    # TODO send a request to the `yolo5` service for prediction
+    # TODO send results to the Telegram end-user
     def __init__(self, token, telegram_chat_url):
         super().__init__(token, telegram_chat_url)
         self.processing_completed = True
@@ -160,6 +162,10 @@ class ImageProcessingBot(Bot):
 
     def upload_2_S3(self, msg):
         self.processing_completed = False
+        # Download the photo sent by the user
+        # file_info = self.telegram_bot_client.get_file(msg['photo'][-1]['file_id'])
+        # file_path_parts = file_info.file_path.split('/')
+        # file_name = file_path_parts[-1]
         image_path = self.download_user_photo(msg)
         # Upload the image to S3
         s3_client = boto3.client('s3')
@@ -172,8 +178,7 @@ class ImageProcessingBot(Bot):
         # Create an SQS client
         sqs = boto3.client('sqs',region_name='eu-north-1')
         # Your SQS queue URL (replace with your actual SQS queue URL)
-        queue_url =  <'YOUR-AWS-SQS-URL'
->
+        queue_url = 'https://sqs.eu-north-1.amazonaws.com/352708296901/AmiranIV-AWS-Queue'
         # Create a message with a custom message ID
         message_body = str(msg["chat"]["id"])
         message_id = s3_key
@@ -192,5 +197,34 @@ class ImageProcessingBot(Bot):
         if response['ResponseMetadata']['HTTPStatusCode'] == 200:
             print(f"Message with ID {message_id} sent successfully.")
         time.sleep(3)
+        # # Send a request to the YOLO5 microservice # with the containers name once its build
+        # yolo5_url = "ServiceName"
+        # response = requests.post(yolo5_url)
+        # if response.status_code == 200:
+        #     # Print the JSON response as text
+        #     json_response = response.text
+        #     print(json_response)
+        #     sys.stdout.flush()
+        #
+        #     #Parse the Json file and send user a message:
+        #     response_data = json.loads(json_response)
+        #     # Initialize a dictionary to store the class counts
+        #     class_counts = {}
+        #
+        #     # Iterate through the labels and count the occurrences of each class
+        #     for label in response_data['labels']:
+        #         class_name = label['class']
+        #         if class_name in class_counts:
+        #             class_counts[class_name] += 1
+        #         else:
+        #             class_counts[class_name] = 1
+        #
+        #     # Create a message with the detected objects and their counts
+        #     message = "Detected Objects:\n"
+        #     for class_name, count in class_counts.items():
+        #         message += f"{class_name}: {count}\n"
+        #
+        #     # Send the message to the user
+        #     self.telegram_bot_client.send_message(msg['chat']['id'], message)
         self.send_text(msg['chat']['id'], f'Please wait your image is being processed...')
         self.processing_completed = True
