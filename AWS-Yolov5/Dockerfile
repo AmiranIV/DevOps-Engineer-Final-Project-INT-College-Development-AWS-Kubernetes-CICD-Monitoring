@@ -1,4 +1,7 @@
-# Use an official Python runtime as the base image
+# First stage: Use the base image you have
+FROM amiraniv/k8s-yolo-amiran-dev:v2.0 as builder
+
+# Second stage: Use an official Python runtime as the base image
 FROM python:3.9-slim
 
 # Upgrade pip
@@ -13,7 +16,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy the application code and requirements file into the container
-COPY . /app
+COPY --from=builder /app .
 
 # Install the required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
