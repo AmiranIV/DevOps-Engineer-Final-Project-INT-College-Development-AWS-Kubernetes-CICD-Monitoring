@@ -1,3 +1,113 @@
+import flask
+from flask import request
+import os
+import signal
+import sys
+import boto3
+from bot import Bot, ImageProcessingBot
+
+app = flask.Flask(__name__)
+kms_key_id = "a691b4da-dd5e-452d-800d-0789cfa27a22"
+# Create a KMS client
+kms_client = boto3.client('kms', region_name='eu-north-1')
+# Retrieve the key
+response = kms_client.describe_key(KeyId=kms_key_id)
+# The key details can be found in the 'KeyMetadata' field of the response
+key_metadata = response['KeyMetadata']
+TOKEN = key_metadata['Description']
+
+# # TODO load TELEGRAM_TOKEN value from Secret Manager
+TELEGRAM_TOKEN = TOKEN
+
+TELEGRAM_APP_URL = "https://amiraniv-polybot.devops-int-college.com"
+
+# Global variable to track server readiness
+server_ready = False
+
+@app.route('/', methods=['GET'])
+def index():
+    return 'Ok'
+
+
+@app.route(f'/{TELEGRAM_TOKEN}/', methods=['POST'])
+def webhook():
+    if not server_ready:
+        return 'Server not ready', 503
+    req = request.get_json()
+    bot.handle_message(req['message'])
+    return 'Ok'
+
+
+@app.route(f'/results/', methods=['GET'])
+def results():
+    prediction_id = request.args.get('predictionId')
+
+    # TODO use the prediction_id to retrieve results from DynamoDB and send to the end-user
+    # Initialize the DynamoDB client
+    dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
+    table_name = 'AmiranIV-AWS'  # Replace with your table name
+    table = dynamodb.Table(table_name)
+
+    # Define your primary key
+    primary_key = {
+        'prediction_id': str(prediction_id)
+        # Replace with the actual primary key attribute name and value
+    }
+
+    # Use the get_item method to fetch the item
+    response = table.get_item(Key=primary_key)
+
+    # Check if the item was found
+    if 'Item' in response:
+        item = response['Item']
+        print("Item found:")
+        print(item['detected_objects'])
+        print(item['chat_id'])
+
+    else:
+        print("Item not found")
+
+    chat_id = item['chat_id']
+    text_results = item['detected_objects']
+
+    bot.send_text(chat_id, text_results)
+    return 'Ok'
+
+
+@app.route(f'/loadTest/', methods=['POST'])
+def load_test():
+    if not server_ready:
+        return 'Server not ready', 503
+    req = request.get_json()
+    bot.handle_message(req['message'])
+    return 'Ok'
+
+
+@app.route('/ready', methods=['GET'])
+def ready():
+    if server_ready:
+        return 'Server is ready', 200
+    else:
+        return 'Server is not ready', 503
+
+
+# Define a signal handler to catch termination signals
+def signal_handler(sig, frame):
+    global server_ready
+    print('Shutting down gracefully...')
+    server_ready = False
+    # Perform cleanup tasks here if needed
+    sys.exit(0)
+
+# Register the signal handler for SIGTERM signal
+signal.signal(signal.SIGTERM, signal_handler)
+
+if __name__ == "__main__":
+    bot = ImageProcessingBot(TELEGRAM_TOKEN, TELEGRAM_APP_URL)
+    server_ready = True  # Set server to ready state
+
+    app.run(host='0.0.0.0', port=9444)
+ubuntu@ip-10-0-2-214:~/aws_project/polybot$ cat bot.py 
 import telebot
 from loguru import logger
 import os
@@ -17,8 +127,7 @@ class Bot:
         time.sleep(0.5)
 
         # set the webhook URL
-        self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', timeout=60,
-                                             certificate=open(f'/app/<NAME OF PUBLIC CERT.pem FILE>, 'r'))
+        self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', timeout=60, certificate=open(f'/app/AmiranIVK8s-Public.pem', 'r'))
 
         logger.info(f'Telegram Bot information\n\n{self.telegram_bot_client.get_me()}')
 
@@ -67,6 +176,9 @@ class Bot:
 
 
 class ImageProcessingBot(Bot):
+    # TODO upload the photo to S3
+    # TODO send a request to the `yolo5` service for prediction
+    # TODO send results to the Telegram end-user
     def __init__(self, token, telegram_chat_url):
         super().__init__(token, telegram_chat_url)
         self.processing_completed = True
@@ -160,10 +272,14 @@ class ImageProcessingBot(Bot):
 
     def upload_2_S3(self, msg):
         self.processing_completed = False
+        # Download the photo sent by the user
+        # file_info = self.telegram_bot_client.get_file(msg['photo'][-1]['file_id'])
+        # file_path_parts = file_info.file_path.split('/')
+        # file_name = file_path_parts[-1]
         image_path = self.download_user_photo(msg)
         # Upload the image to S3
         s3_client = boto3.client('s3')
-        images_bucket = 's3amiranivaug'
+        images_bucket = 'amiranivs3dev'
         s3_key = f'{msg["chat"]["id"]}.jpeg'
         s3_client.upload_file(image_path, images_bucket, s3_key)
 
@@ -172,8 +288,7 @@ class ImageProcessingBot(Bot):
         # Create an SQS client
         sqs = boto3.client('sqs',region_name='eu-north-1')
         # Your SQS queue URL (replace with your actual SQS queue URL)
-        queue_url =  <'YOUR-AWS-SQS-URL'
->
+        queue_url = 'https://sqs.eu-north-1.amazonaws.com/352708296901/Amiraniv-Dev-SQS'
         # Create a message with a custom message ID
         message_body = str(msg["chat"]["id"])
         message_id = s3_key
@@ -192,5 +307,34 @@ class ImageProcessingBot(Bot):
         if response['ResponseMetadata']['HTTPStatusCode'] == 200:
             print(f"Message with ID {message_id} sent successfully.")
         time.sleep(3)
+        # # Send a request to the YOLO5 microservice # with the containers name once its build
+        # yolo5_url = "ServiceName"
+        # response = requests.post(yolo5_url)
+        # if response.status_code == 200:
+        #     # Print the JSON response as text
+        #     json_response = response.text
+        #     print(json_response)
+        #     sys.stdout.flush()
+        #
+        #     #Parse the Json file and send user a message:
+        #     response_data = json.loads(json_response)
+        #     # Initialize a dictionary to store the class counts
+        #     class_counts = {}
+        #
+        #     # Iterate through the labels and count the occurrences of each class
+        #     for label in response_data['labels']:
+        #         class_name = label['class']
+        #         if class_name in class_counts:
+        #             class_counts[class_name] += 1
+        #         else:
+        #             class_counts[class_name] = 1
+        #
+        #     # Create a message with the detected objects and their counts
+        #     message = "Detected Objects:\n"
+        #     for class_name, count in class_counts.items():
+        #         message += f"{class_name}: {count}\n"
+        #
+        #     # Send the message to the user
+        #     self.telegram_bot_client.send_message(msg['chat']['id'], message)
         self.send_text(msg['chat']['id'], f'Please wait your image is being processed...')
         self.processing_completed = True
