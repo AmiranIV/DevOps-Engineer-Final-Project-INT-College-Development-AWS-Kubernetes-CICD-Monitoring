@@ -1,5 +1,5 @@
 # First stage: Use the base image you have
-FROM amiraniv/k8s-yolo-amiran-dev:v2.0 as builder
+FROM amiraniv/amiraniv-k8s-yolov5:v13.0 as builder
 
 # Second stage: Use an official Python runtime as the base image
 FROM python:3.9-slim
