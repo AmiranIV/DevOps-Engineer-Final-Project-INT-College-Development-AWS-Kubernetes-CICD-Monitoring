@@ -1,22 +1,13 @@
+# Dockerfile Yolo 
+
 # First stage: Use the base image you have
-FROM amiraniv/k8s-yolo-amiran-dev:v2.0 as builder
-
-# Second stage: Use an official Python runtime as the base image
-FROM python:3.9-slim
-
-# Upgrade pip
-RUN pip install --no-cache-dir --upgrade pip
-
-# Install required system packages (including OpenGL and libgthread)
-RUN apt-get update && \
-    apt-get install -y libgl1-mesa-glx libglib2.0-0 && \
-    rm -rf /var/lib/apt/lists/*
+FROM amiraniv/amiraniv-k8s-yolov5:v13.0 
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the application code and requirements file into the container
-COPY --from=builder /app .
+COPY  . . 
 
 # Install the required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
