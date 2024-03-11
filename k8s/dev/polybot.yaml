@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: telegram-bot
-        image: amiraniv/k8s-poly-amiran-dev:v12.0
+        image: amiraniv/k8s-poly-amiran-dev:v13.0
         ports:
         - containerPort: 8443
         readinessProbe:
@@ -61,10 +61,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - amiraniv-polybot.devops-int-college.com
-    secretName: amiraniv-polybot-tls
+    - amiraniv-polybot-dev.devops-int-college.com
+    secretName: amiraniv-polybot-dev-tls
   rules:
-  - host: amiraniv-polybot.devops-int-college.com
+  - host: amiraniv-polybot-dev.devops-int-college.com
     http:
       paths:
       - pathType: Prefix
