@@ -7,7 +7,7 @@ import boto3
 from bot import Bot, ImageProcessingBot
 
 app = flask.Flask(__name__)
-kms_key_id = "a691b4da-dd5e-452d-800d-0789cfa27a22"
+kms_key_id = 'a691b4da-dd5e-452d-800d-0789cfa27a22'
 # Create a KMS client
 kms_client = boto3.client('kms', region_name='eu-north-1')
 # Retrieve the key
@@ -19,7 +19,7 @@ TOKEN = key_metadata['Description']
 # # TODO load TELEGRAM_TOKEN value from Secret Manager
 TELEGRAM_TOKEN = TOKEN
 
-TELEGRAM_APP_URL = "https://amiraniv-polybot.devops-int-college.com"
+TELEGRAM_APP_URL = "amiraniv-polybot-dev.devops-int-college.com"
 
 # Global variable to track server readiness
 server_ready = False
@@ -42,16 +42,14 @@ def webhook():
 def results():
     prediction_id = request.args.get('predictionId')
 
-    # TODO use the prediction_id to retrieve results from DynamoDB and send to the end-user
     # Initialize the DynamoDB client
     dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
-    table_name = 'AmiranIV-AWS'  # Replace with your table name
+    table_name = 'AmiranIV-Dev-Dynamo'  # Replace with your table name
     table = dynamodb.Table(table_name)
 
     # Define your primary key
     primary_key = {
         'prediction_id': str(prediction_id)
-        # Replace with the actual primary key attribute name and value
     }
 
     # Use the get_item method to fetch the item
@@ -64,14 +62,14 @@ def results():
         print(item['detected_objects'])
         print(item['chat_id'])
 
+        chat_id = item['chat_id']
+        text_results = item['detected_objects']
+
+        bot.send_text(chat_id, text_results)
+        return 'Ok'
     else:
         print("Item not found")
-
-    chat_id = item['chat_id']
-    text_results = item['detected_objects']
-
-    bot.send_text(chat_id, text_results)
-    return 'Ok'
+        return 'Item not found', 404
 
 
 @app.route(f'/loadTest/', methods=['POST'])
