@@ -7,14 +7,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: yolov-k8s-dev
+      app: yolov-k8s
   template:
     metadata:
       labels:
-        app: yolov-k8s-dev
+        app: yolov-k8s
     spec:
       containers:
-      - name: yolov-k8s-dev
+      - name: yolov-k8s
         image: amiraniv/k8s-yolov-dev:v1.0
         ports:
         - containerPort: 8080
@@ -29,11 +29,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: yolov-k8s-service-dev
+  name: yolov-k8s-service
   namespace: dev
 spec:
   selector:
-    app: yolov-k8s-dev
+    app: yolov-k8s
   ports:
     - protocol: TCP
       port: 8080

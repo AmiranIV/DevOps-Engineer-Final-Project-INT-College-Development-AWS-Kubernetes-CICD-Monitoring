@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: telegram-bot-dev
+  name: telegram-bot
   namespace: dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: telegram-bot-dev
+      app: telegram-bot
   template:
     metadata:
       labels:
-        app: telegram-bot-dev
+        app: telegram-bot
     spec:
       containers:
-      - name: telegram-bot-dev
-        image: amiraniv/k8s-poly-amiran-dev:v12.0
+      - name: telegram-bot
+        image: amiraniv/k8s-poly-amiran-dev:v15.0
         ports:
         - containerPort: 8443
         readinessProbe:
@@ -40,11 +40,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: telegram-bot-service-dev
+  name: telegram-bot-service
   namespace: dev
 spec:
   selector:
-    app: telegram-bot-dev
+    app: telegram-bot
   ports:
   - protocol: TCP
     port: 8443
@@ -55,22 +55,22 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: amiraniv-polybot-ingress-dev
+  name: amiraniv-polybot-ingress
   namespace: dev
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - amiraniv-polybot.devops-int-college.com
-    secretName: amiraniv-polybot-tls
+    - amiraniv-polybot-dev.devops-int-college.com
+    secretName: amiraniv-polybot-dev-tls
   rules:
-  - host: amiraniv-polybot.devops-int-college.com
+  - host: amiraniv-polybot-dev.devops-int-college.com
     http:
       paths:
       - pathType: Prefix
         path: /
         backend:
           service:
-            name: telegram-bot-service-dev
+            name: telegram-bot-service
             port:
               number: 8443
