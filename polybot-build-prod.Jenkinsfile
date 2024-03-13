@@ -19,19 +19,19 @@ pipeline {
                         sh '''
                             cd AWS-PolyBot
                             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                            docker build -t jenkinspoly-prod-test:$FULL_VER .
-                            docker tag jenkinspoly-prod-test:$FULL_VER $DH_NAME/jenkinspoly-prod-test:$FULL_VER
-                            docker push $DH_NAME/jenkinspoly-prod-test:$FULL_VER
+                            docker build -t k8s-poly-amiran:$FULL_VER .
+                            docker tag k8s-poly-amiran:$FULL_VER $DH_NAME/k8s-poly-amiran:$FULL_VER
+                            docker push $DH_NAME/k8s-poly-amiran:$FULL_VER
                         '''
                     }
                 }
             }
         }
-        
+
         stage('Trigger Deploy') {
             steps {
                 build job: 'releases-prod', wait: false, parameters: [
-                    string(name: 'JENKINS_POLY_PROD_IMG_URL', value: "$DH_NAME/jenkinspoly-prod-test:$FULL_VER")
+                    string(name: 'JENKINS_POLY_PROD_IMG_URL', value: "$DH_NAME/k8s-poly-amiran:$FULL_VER")
                 ]
             }
         }
