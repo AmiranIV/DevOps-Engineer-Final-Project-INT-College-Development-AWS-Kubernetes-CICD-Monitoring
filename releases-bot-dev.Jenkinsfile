@@ -16,11 +16,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Complete this code to deploy to real k8s cluster
-              withCredentials([string(credentialsId: 'jenkinsclassicgithubtoken-dev', variable: 'jenkinsclassicgithubtoken-dev')]) {
-                sh 'git config --global --add safe.directory /var/lib/jenkins/workspace/dev/releases-bot-dev'
+              withCredentials([string(credentialsId: 'jenkinsclassicgithubtoken-dev', variable: 'jenkinsclassicgithubtoken')]) {
+                sh 'git config --global --add safe.directory /var/lib/jenkins/workspace/prod/releases-prod'
                 sh 'git config --global user.email "amiranivgi@gmail.com"'
                 sh 'git config --global user.name "amiraniv"'
-                sh "git remote set-url origin https://amiraniv:${jenkinsclassicgithubtoken-dev}@github.com/amiraniv/CICD-Final-Project.git"
+                sh 'git config --global credential.helper cache'
+                sh "git remote set-url origin https://amiraniv:${jenkinsclassicgithubtoken}@github.com/amiraniv/CICD-Final-Project.git"
                 sh 'git checkout releases'
                 sh 'git branch'
                 sh 'cd k8s/dev && ls'
