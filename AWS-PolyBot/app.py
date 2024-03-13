@@ -1,6 +1,8 @@
 import flask
 from flask import request
 import os
+import signal
+import sys
 from bot import Bot, ImageProcessingBot
 import boto3
 
@@ -18,6 +20,9 @@ TOKEN = key_metadata['Description']
 TELEGRAM_TOKEN = TOKEN
 
 TELEGRAM_APP_URL = "https://amiraniv-polybot.devops-int-college.com"
+
+# Global variable to track server readiness
+server_ready = False
 
 @app.route('/', methods=['GET'])
 def index():
@@ -73,8 +78,27 @@ def load_test():
     bot.handle_message(req['message'])
     return 'Ok'
 
+@app.route('/ready', methods=['GET'])
+def ready():
+    if server_ready:
+        return 'Server is ready', 200
+    else:
+        return 'Server is not ready', 503
+
+
+# Define a signal handler to catch termination signals
+def signal_handler(sig, frame):
+    global server_ready
+    print('Shutting down gracefully...')
+    server_ready = False
+    # Perform cleanup tasks here if needed
+    sys.exit(0)
+
+# Register the signal handler for SIGTERM signal
+signal.signal(signal.SIGTERM, signal_handler)
+
 
 if __name__ == "__main__":
     bot = ImageProcessingBot(TELEGRAM_TOKEN, TELEGRAM_APP_URL)
-
+    server_ready = True
     app.run(host='0.0.0.0', port=8443)
