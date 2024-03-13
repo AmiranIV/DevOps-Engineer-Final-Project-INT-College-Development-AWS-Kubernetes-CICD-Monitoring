@@ -22,6 +22,7 @@ pipeline {
                             docker build -t amiraniv-k8s-yolov5:$FULL_VER .
                             docker tag amiraniv-k8s-yolov5:$FULL_VER $DH_NAME/amiraniv-k8s-yolov5:$FULL_VER
                             docker push $DH_NAME/amiraniv-k8s-yolov5:$FULL_VER
+                            echo 'fix'
                         '''
                     }
                 }
