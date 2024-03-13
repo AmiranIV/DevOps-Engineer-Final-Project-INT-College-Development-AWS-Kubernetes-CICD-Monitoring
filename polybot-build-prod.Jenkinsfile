@@ -22,6 +22,7 @@ pipeline {
                             docker build -t k8s-poly-amiran:$FULL_VER .
                             docker tag k8s-poly-amiran:$FULL_VER $DH_NAME/k8s-poly-amiran:$FULL_VER
                             docker push $DH_NAME/k8s-poly-amiran:$FULL_VER
+                            sh 'echo building polybot pipeline fix...'
                         '''
                     }
                 }

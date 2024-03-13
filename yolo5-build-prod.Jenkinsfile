@@ -30,7 +30,7 @@ pipeline {
 
         stage('Trigger Deploy') {
             steps {
-                build job: 'releases-prod', wait: false, parameters: [
+                build job: 'releases-prod-yolo', wait: false, parameters: [
                     string(name: 'JENKINS_YOLO_PROD_IMG_URL', value: "$DH_NAME/amiraniv-k8s-yolov5:$FULL_VER")
                 ]
             }
