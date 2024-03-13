@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: telegram-bot
-        image: amiraniv/k8s-poly-amiran:v.65
+        image: amiraniv/k8s-poly-amiran:v.67
         ports:
         - containerPort: 8443
         readinessProbe:
