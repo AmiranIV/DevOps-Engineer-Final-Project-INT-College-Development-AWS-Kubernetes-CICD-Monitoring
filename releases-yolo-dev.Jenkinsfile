@@ -24,7 +24,6 @@ pipeline {
                 sh 'git config --global credential.helper cache'
                 sh "git remote set-url origin https://amiraniv:${jenkinsclassicgithubtoken}@github.com/amiraniv/CICD-Final-Project.git"
                 sh 'git checkout releases'
-                sh 'git branch'
                 sh 'cd k8s/dev && ls'
                 sh "sed -i \"s|image: .*|image: $JENKINS_POLY_DEV_IMG_URL|\" k8s/dev/yolo.yaml"
                 sh 'git add k8s/dev/yolo.yaml'
