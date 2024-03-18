@@ -17,7 +17,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-dev', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         sh '''
-                            cd AWS-PolyBot
+                            cd AWS-Yolov5
                             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                             docker build -t k8s-yolov-dev:$FULL_VER .
                             docker tag k8s-yolov-dev:$FULL_VER $DH_NAME/k8s-yolov-dev:$FULL_VER
