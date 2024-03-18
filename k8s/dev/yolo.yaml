@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: yolov-k8s
-        image: amiraniv/k8s-yolov-dev:v.25
+        image: amiraniv/k8s-yolov-dev:v.26
         ports:
         - containerPort: 8080
         resources:
