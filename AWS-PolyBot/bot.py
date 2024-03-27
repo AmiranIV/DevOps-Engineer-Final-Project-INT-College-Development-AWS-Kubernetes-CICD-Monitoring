@@ -226,5 +226,5 @@ class ImageProcessingBot(Bot):
         #
         #     # Send the message to the user
         #     self.telegram_bot_client.send_message(msg['chat']['id'], message)
-        self.send_text(msg['chat']['id'], f'Please wait ....')
+        self.send_text(msg['chat']['id'], f'Wait for your image ....')
         self.processing_completed = True
