@@ -51,6 +51,6 @@ Configured ArgoCD for automatic deployment in dev and manual in prod environment
 5 35 50](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/117059c5-2a4e-404d-ad60-83b1fb8e4bb2)
 
 
-![Uploading WhatsApp Image 2024-03-31 at 15.36.00.jpeg…]()
+![WhatsApp Image 2024-03-31 at 15 36 03](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/ae7f1c0e-3c72-4de7-b2c4-7df0eeedd6a4)
 
 
