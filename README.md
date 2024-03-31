@@ -1,6 +1,6 @@
 ## DevOps Final Project INT College full DevOps Circle Development & Kubernetes & CI/CD With Jenkins & Monitoring
 
-![Uploading image.png…]()
+![image](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/af61928b-b7da-4f75-b819-76094d732dd7)
 
 Kubernetes Cluster and Infrastructure Setup:
 
