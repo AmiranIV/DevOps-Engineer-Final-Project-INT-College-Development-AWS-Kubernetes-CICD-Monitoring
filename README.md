@@ -45,4 +45,12 @@ Installed and configured ArgoCD in the Kubernetes cluster.
 Created releases-dev and releases-prod Jenkinsfiles for automated deployment post-build.
 Configured ArgoCD for automatic deployment in dev and manual in prod environments.
 
+![WhatsApp Image 2024-03-31 at 15 29 52](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/7372fe8c-f96c-4125-bd1a-4a4e9daf40bb)
+
+![WhatsApp Image 2024-03-31 at 1![WhatsApp Image 2024-03-31 at 15 36 00](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/25eaa251-f7d7-411f-a9c9-8f7cbe5c602c)
+5 35 50](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/117059c5-2a4e-404d-ad60-83b1fb8e4bb2)
+
+
+![Uploading WhatsApp Image 2024-03-31 at 15.36.00.jpeg…]()
+
 
