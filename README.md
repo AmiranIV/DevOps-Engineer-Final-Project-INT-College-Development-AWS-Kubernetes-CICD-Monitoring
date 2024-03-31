@@ -46,5 +46,3 @@ Created releases-dev and releases-prod Jenkinsfiles for automated deployment pos
 Configured ArgoCD for automatic deployment in dev and manual in prod environments.
 
 
-![F00B0B2C-DB06-4DFF-81C7-A40604DA9143_1_102_o](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/2df99812-0849-4798-850c-90e8b49b17c0)
-
