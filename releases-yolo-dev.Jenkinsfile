@@ -22,7 +22,7 @@ pipeline {
                 sh 'git config --global user.email "amiranivgi@gmail.com"'
                 sh 'git config --global user.name "amiraniv"'
                 sh 'git config --global credential.helper cache'
-                sh "git remote set-url origin https://amiraniv:${jenkinsclassicgithubtoken}@github.com/amiraniv/CICD-Final-Project.git"
+                sh "git remote set-url origin https://amiraniv:${jenkinsclassicgithubtoken}@github.com/amiraniv/DevOps-Engineer-Final-Project-INT-College-Development-AWS-Kubernetes-CICD-Monitoring.git"
                 sh 'git checkout releases'
                 sh 'cd k8s/dev && ls'
                 sh "sed -i \"s|image: .*|image: $JENKINS_YOLO_DEV_IMG_URL|\" k8s/dev/yolo.yaml"
