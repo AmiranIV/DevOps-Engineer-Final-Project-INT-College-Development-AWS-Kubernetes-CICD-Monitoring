@@ -1,4 +1,4 @@
-### DevOps Final Project INT College full DevOps Circle! ∞ 
+### DevOps Final Project INT College full DevOps Circle! 
 
 ### Development & Kubernetes & CI/CD With Jenkins & Monitoring 
 (+Video of the Process 🎥)
