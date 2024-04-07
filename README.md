@@ -3,7 +3,7 @@
 ### Development & Kubernetes & CI/CD With Jenkins & Monitoring 
 (+Video of the Process 🎥)
 
-### Technologies used: AWS ☁️| Python 🐍 | Git 🐱| Docker 🐳 | Jenkins 👨🏽‍🦳| Kubernetes ☸️| Linux🐧 | Bash🧊 | Data 📊| 
+### Technologies used: AWS ☁️| Python 🐍 | Git 🐱| Docker 🐳 | Jenkins 👨🏽‍🦳| Kubernetes ☸️| Linux🐧 | Bash🧊 | Data 📊
 -------------------------------------------------------------------------------------------------------------------------------------------------
 ![image](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/af61928b-b7da-4f75-b819-76094d732dd7)
 
