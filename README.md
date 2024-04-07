@@ -10,6 +10,7 @@ Established a cluster with one control plane and multiple worker nodes in differ
 Configured essential Kubernetes components like apiserver, etcd, kube-scheduler, kube-controller-manager, and cloud-controller-manager.
 Implemented IAM roles, a single security group, and deployed a medium Ubuntu EC2 instance.
 Installed container runtime, aligning machine hostname with AWS, and installed kubeadm, kubelet, and kubectl.
+
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -20,6 +21,7 @@ Integrated AWS Cloud Controller Manager for Kubernetes-AWS service interactions.
 Deployed a CNI addon for pod-to-pod communication.
 Joined worker nodes and installed the EBS CSI driver for persistent storage.
 Deployed Kubernetes Dashboard with secure token-based access.
+
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
 
