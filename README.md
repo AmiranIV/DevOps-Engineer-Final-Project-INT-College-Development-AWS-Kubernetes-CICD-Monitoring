@@ -59,6 +59,8 @@ Configured ArgoCD for automatic deployment in dev and manual in prod environment
 
 ### 🎥 Link to video of the entire process: https://drive.google.com/drive/folders/1qZSwkKlwqNxWTw6vu8lRmnmombaTr2L4?usp=sharing
 
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
 ## Results:
 
 ![WhatsApp Image 2024-03-31 at 15 29 52](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/7372fe8c-f96c-4125-bd1a-4a4e9daf40bb)
