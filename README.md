@@ -1,11 +1,20 @@
 ### DevOps Final Project INT College full DevOps Circle! 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------
+### Project overview
+
+This initiative marks the pinnacle of our DevOps journey, focusing on the incorporation of contemporary technologies and top-tier methodologies to optimize the deployment, scaling, surveillance, and administration of applications within Kubernetes environments on AWS. Furthermore, we have refined CI/CD workflows with Jenkins to facilitate consistent and uninterrupted code integration and deployment.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### Development & Kubernetes & CI/CD With Jenkins & Monitoring 
 (+Video of the Process 🎥)
 
-#### Technologies used: AWS ☁️| Python 🐍 | Git 🐱| Docker 🐳 | Jenkins 👨🏽‍🦳| Kubernetes ☸️| Linux🐧 | Bash🧊 | Data 📊
+#### Technologies used: AWS ☁️| Python 🐍 | Git 🐱| Docker 🐳 | Jenkins 👨🏽‍🦳| Kubernetes Adm ☸️| Linux🐧 | Bash🧊 | Data 📊 | Grafana & Prometheus 📈 | fluentD 🕊️| Helm 👁️ | Yolov5 🤖
 -------------------------------------------------------------------------------------------------------------------------------------------------
 ![image](https://github.com/AmiranIV/CICD-Final-Project/assets/109898333/af61928b-b7da-4f75-b819-76094d732dd7)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
 #### Kubernetes Cluster and Infrastructure Setup:
 
