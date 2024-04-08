@@ -1,4 +1,5 @@
-### DevOps Final Project INT College full DevOps Circle! 
+### DevOps Final Project INT College full DevOps Circle! ![image](https://github.com/AmiranIV/DevOps-Engineer-Final-Project-INT-College-Development-AWS-Kubernetes-CICD-Monitoring/assets/109898333/7aefee2c-acf5-44c7-b731-b8aa097f42b0)
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 ### Project overview
